@@ -9,9 +9,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       title: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       description: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       createdAt: {
@@ -21,7 +23,17 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+      listId: {
+         type: Sequelize.INTEGER,
+         onDelete: "CASCADE",
+         allowNull: false,
+         references: {
+           model: "Lists",
+           key: "id",
+           as: "listId"
+         },
+       }
     });
   },
   down: (queryInterface, Sequelize) => {
