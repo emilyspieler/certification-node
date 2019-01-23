@@ -3,10 +3,10 @@
 const faker = require("faker");
 
 //#2
- let items = [];
+ let lists = [];
 
  for(let i = 1 ; i <= 15 ; i++){
-   items.push({
+   lists.push({
      title: faker.hacker.noun(),
      description: faker.hacker.phrase(),
      createdAt: new Date(),
@@ -26,7 +26,7 @@ module.exports = {
         isBetaMember: false
       }], {});
     */
-    return queryInterface.bulkInsert("Items", items, {});
+    return queryInterface.bulkInsert("Lists", lists, {});
   },
 
   down: (queryInterface, Sequelize) => {
@@ -37,6 +37,6 @@ module.exports = {
       Example:
       return queryInterface.bulkDelete('Person', null, {});
     */
-    return queryInterface.bulkDelete("Items", null, {});
+    return queryInterface.bulkDelete("Lists", null, {});
   }
 };

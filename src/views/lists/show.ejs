@@ -10,15 +10,18 @@
 
 
 
-      <h1><%= item.title %></h1>
-
-       <a href="/items/<%= item.id %>/edit" class="btn btn-warning">Edit</a>
+      <h1><%= list.title %></h1>
 
 
-        <form style="display:initial" action="/items/<%= item.id %>/destroy" method="post">
+
+       <a href="/lists/<%= list.id %>/edit" class="btn btn-warning">Edit</a>
+
+
+        <form style="display:initial" action="/lists/<%= list.id %>/destroy" method="post">
           <button type="submit" class="btn btn-danger">Delete</button>
         </form>
-      <p><%= item.description %></p>
+
+      <p><%= list.description %></p>
     </main>
 
     <% include ../static/partials/baseScripts.ejs %>

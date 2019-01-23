@@ -2,22 +2,22 @@ const request = require("request");
 const server = require("../../src/server");
 const base = "http://localhost:3000/items/";
 const sequelize = require("../../src/db/models/index").sequelize;
-const Item = require("../../src/db/models").Item;
+const List = require("../../src/db/models").List;
 
-describe("routes : items", () => {
+describe("routes : lists", () => {
 
-  describe("GET /items", () => {
+  describe("GET /lists", () => {
 
     beforeEach((done) => {
-      this.item;
+      this.list;
       sequelize.sync({force: true}).then((res) => {
 
-       Item.create({
+       List.create({
          title: "JS Frameworks",
          description: "There is a lot of them"
        })
-        .then((item) => {
-          this.item = item;
+        .then((list) => {
+          this.list = list;
           done();
         })
         .catch((err) => {
@@ -29,30 +29,30 @@ describe("routes : items", () => {
 
     });
 
-    it("should return a status code 200 and all items", () => {
+    it("should return a status code 200 and all lists", () => {
 
        request.get(base, (err, res, body) => {
          expect(res.statusCode).toBe(200);
          expect(err).toBeNull();
-         expect(body).toContain("Items");
+         expect(body).toContain("Lists");
          expect(body).toContain("JS Frameworks");
          done();
        });
      });
 
-     describe("GET /items/new", () => {
+     describe("GET /lists/new", () => {
 
     it("should render a new item form", () => {
       request.get(`${base}new`, (err, res, body) => {
         expect(err).toBeNull();
-        expect(body).toContain("New Item");
+        expect(body).toContain("New List");
         done();
       });
     });
 
   });
 
-  describe("POST /items/create", () => {
+  describe("POST /lists/create", () => {
       const options = {
         url: `${base}create`,
         form: {
@@ -66,11 +66,11 @@ describe("routes : items", () => {
         request.post(options,
 
           (err, res, body) => {
-            Item.findOne({where: {title: "blink-182 songs"}})
-            .then((item) => {
+            List.findOne({where: {title: "blink-182 songs"}})
+            .then((list) => {
               expect(res.statusCode).toBe(303);
-              expect(item.title).toBe("blink-182 songs");
-              expect(item.description).toBe("What's your favorite blink-182 song?");
+              expect(list.title).toBe("blink-182 songs");
+              expect(list.description).toBe("What's your favorite blink-182 song?");
               done();
             })
             .catch((err) => {
@@ -82,10 +82,10 @@ describe("routes : items", () => {
       });
     });
 
-    describe("GET /items /:id", () => {
+    describe("GET /lists /:id", () => {
 
-     it("should render a view with the selected item", () => {
-       request.get(`${base}${this.item.id}`, (err, res, body) => {
+     it("should render a view with the selected list", () => {
+       request.get(`${base}${this.list.id}`, (err, res, body) => {
          expect(err).toBeNull();
          expect(body).toContain("JS Frameworks");
          done();
@@ -94,22 +94,22 @@ describe("routes : items", () => {
 
    });
 
-   describe("POST /items/:id/destroy", () => {
+   describe("POST /lists/:id/destroy", () => {
 
-     it("should delete the topic with the associated ID", () => {
+     it("should delete the list with the associated ID", () => {
 
-       Item.all()
-       .then((items) => {
+       List.all()
+       .then((lists) => {
 
-         const itemCountBeforeDelete = items.length;
+         const listCountBeforeDelete = lists.length;
 
-         expect(itemCountBeforeDelete).toBe(1);
+         expect(listCountBeforeDelete).toBe(1);
 
-         request.post(`${base}${this.item.id}/destroy`, (err, res, body) => {
-           Item.all()
-           .then((items) => {
+         request.post(`${base}${this.list.id}/destroy`, (err, res, body) => {
+           List.all()
+           .then((lists) => {
              expect(err).toBeNull();
-             expect(items.length).toBe(itemCountBeforeDelete - 1);
+             expect(lists.length).toBe(listCountBeforeDelete - 1);
              done();
            })
 
@@ -120,10 +120,10 @@ describe("routes : items", () => {
 
    });
 
-   describe("GET /items/:id/edit", () => {
+   describe("GET /lists/:id/edit", () => {
 
      it("should render a view with an edit item form", () => {
-       request.get(`${base}${this.item.id}/edit`, (err, res, body) => {
+       request.get(`${base}${this.list.id}/edit`, (err, res, body) => {
          expect(err).toBeNull();
          expect(body).toContain("Edit Item");
          expect(body).toContain("JS Frameworks");
@@ -133,27 +133,25 @@ describe("routes : items", () => {
 
    });
 
-   describe("POST /items/:id/update", () => {
+   describe("POST /lists/:id/update", () => {
 
      it("should update the item with the given values", () => {
         const options = {
-           url: `${base}${this.item.id}/update`,
+           url: `${base}${this.list.id}/update`,
            form: {
              title: "JavaScript Frameworks",
              description: "There are a lot of them"
            }
          };
-//#1
          request.post(options,
            (err, res, body) => {
 
            expect(err).toBeNull();
-//#2
-           Item.findOne({
-             where: { id: this.item.id }
+           List.findOne({
+             where: { id: this.list.id }
            })
-           .then((item) => {
-             expect(item.title).toBe("JavaScript Frameworks");
+           .then((list) => {
+             expect(list.title).toBe("JavaScript Frameworks");
              done();
            });
          });
