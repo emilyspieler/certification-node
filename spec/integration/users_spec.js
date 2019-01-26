@@ -33,7 +33,6 @@ describe("routes : users", () => {
 
   describe("POST /users", () => {
 
-// #1
     it("should create a new user with valid values and redirect", () => {
 
       const options = {

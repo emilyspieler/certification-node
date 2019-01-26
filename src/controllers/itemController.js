@@ -10,7 +10,8 @@ module.exports = {
      let newItem= {
        title: req.body.title,
        description: req.body.description,
-       listId: req.params.listId
+       listId: req.params.listId,
+       userId: req.user.id
      };
      itemQueries.addItem(newItem, (err, item) => {
        if(err){

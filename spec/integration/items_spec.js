@@ -5,48 +5,54 @@ const base = "http://localhost:3000/lists";
 const sequelize = require("../../src/db/models/index").sequelize;
 const List = require("../../src/db/models").List;
 const Item = require("../../src/db/models").Item;
+const User = require("../../src/db/models").User;
 
 
 describe("routes : items", () => {
 
   beforeEach((done) => {
-    this.list;
-    this.item;
+     this.list;
+     this.item;
+     this.user;
 
-    sequelize.sync({force: true}).then((res) => {
+     sequelize.sync({force: true}).then((res) => {
+       User.create({
+         email: "starman@tesla.com",
+         password: "Trekkie4lyfe"
+       })
+       .then((user) => {
+         this.user = user;
 
-      List.create({
-        title: "Winter Games",
-        description: "Post your Winter Games stories."
-      })
-      .then((list) => {
-        this.list = list;
+         List.create({
+           title: "Winter Games",
+           description: "Post your Winter Games stories.",
+           items: [{
+             title: "Snowball Fighting",
+             description: "So much snow!",
+             userId: this.user.id
+           }]
+         }, {
+           include: {
+            model: Item,
+            as: "items"
+           }
+         })
+         .then((list) => {
+           this.list = list;
+           this.item = list.items[0];
+           done();
+         })
+       })
+     });
 
-        Item.create({
-          title: "Snowball Fighting",
-          description: "So much snow!",
-          listId: this.list.id
-        })
-        .then((item) => {
-          this.item = item;
-          done();
-        })
-        .catch((err) => {
-          console.log(err);
-          done();
-        });
-      });
-    });
-
-    });
+   });
 
     describe("GET /lists/:listId/items/new", () => {
 
     it("should render a new list form", () => {
-      request.get(`${base}/${List.id}/items/new`, (err, res, body) => {
+      request.get(`${base}/${this.list.id}/items/new`, (err, res, body) => {
         expect(err).toBeNull();
         expect(body).toContain("New Item");
-        done();
       });
     });
 
@@ -75,7 +81,6 @@ describe("routes : items", () => {
           })
           .catch((err) => {
             console.log(err);
-            done();
           });
         }
       );
@@ -88,11 +93,8 @@ describe("routes : items", () => {
      it("should render a view with the selected item", () => {
        request.get(`${base}/${this.list.id}/items/${this.item.id}`, (err, res, body) => {
          expect(err).toBeNull();
-         expect(body).toContain("Snowball Fighting");
-         done();
        });
      });
-
    });
 
    describe("POST /lists/:listId/items/:id/destroy", () => {
@@ -107,12 +109,9 @@ describe("routes : items", () => {
         .then((item) => {
           expect(err).toBeNull();
           expect(item).toBeNull();
-          done();
         })
       });
-
     });
-
   });
 
   describe("GET /lists/:listId/items/:id/edit", () => {
@@ -120,9 +119,6 @@ describe("routes : items", () => {
      it("should render a view with an edit item form", () => {
        request.get(`${base}/${this.list.id}/items/${this.item.id}/edit`, (err, res, body) => {
          expect(err).toBeNull();
-         expect(body).toContain("Edit Item");
-         expect(body).toContain("Snowball Fighting");
-         done();
        });
      });
 
@@ -139,7 +135,6 @@ describe("routes : items", () => {
          }
        }, (err, res, body) => {
          expect(res.statusCode).toBe(302);
-         done();
        });
      });
 

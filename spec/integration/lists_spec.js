@@ -3,44 +3,51 @@ const server = require("../../src/server");
 const base = "http://localhost:3000/";
 const sequelize = require("../../src/db/models/index").sequelize;
 const List = require("../../src/db/models").List;
+const User = require("../../src/db/models").User;
+const Item = require("../../src/db/models").Item;
 
 describe("routes : lists", () => {
 
-  describe("GET /lists", () => {
-
     beforeEach((done) => {
-      this.list;
-      sequelize.sync({force: true}).then((res) => {
+     this.list;
+     this.item;
+     this.user;
 
-       List.create({
-         title: "JS Frameworks",
-         description: "There is a lot of them"
+     sequelize.sync({force: true}).then((res) => {
+
+       User.create({
+         email: "starman@tesla.com",
+         password: "Trekkie4lyfe"
        })
-        .then((list) => {
-          this.list = list;
-          done();
-        })
-        .catch((err) => {
-          console.log(err);
-          done();
-        });
+       .then((user) => {
+         this.user = user; //store the user
 
-      });
+         List.create({
+           title: "Expeditions to Alpha Centauri",
+           description: "A compilation of reports from recent visits to the star system.",
 
-    });
+           items: [{
+             title: "My first visit to Proxima Centauri b",
+             description: "I saw some rocks.",
+             userId: this.user.id
+           }]
+         }, {
 
-    it("should return a status code 200 and all lists", () => {
-
-       request.get(base, (err, res, body) => {
-         expect(res.statusCode).toBe(200);
-         expect(err).toBeNull();
-         expect(body).toContain("Lists");
-         expect(body).toContain("JS Frameworks");
-         done();
-       });
+           include: {
+             model: Item,
+             as: "items"
+           }
+         })
+         .then((list) => {
+           this.lost = list; //store the topic
+           this.item = list.items[0]; //store the post
+           done();
+         })
+       })
      });
+   });
 
-     describe("GET /lists/new", () => {
+  describe("GET /lists/new", () => {
 
     it("should render a new item form", () => {
       request.get(`${base}new`, (err, res, body) => {
@@ -49,8 +56,8 @@ describe("routes : lists", () => {
         done();
       });
     });
+    });
 
-  });
 
   describe("POST /lists/create", () => {
       const options = {
@@ -85,7 +92,7 @@ describe("routes : lists", () => {
     describe("GET /lists /:id", () => {
 
      it("should render a view with the selected list", () => {
-       request.get(`${base}${this.list.id}`, (err, res, body) => {
+       request.get(`${base}${List.id}`, (err, res, body) => {
          expect(err).toBeNull();
          expect(body).toContain("JS Frameworks");
          done();
@@ -105,7 +112,7 @@ describe("routes : lists", () => {
 
          expect(listCountBeforeDelete).toBe(1);
 
-         request.post(`${base}${this.list.id}/destroy`, (err, res, body) => {
+         request.post(`${base}${List.id}/destroy`, (err, res, body) => {
            List.all()
            .then((lists) => {
              expect(err).toBeNull();
@@ -123,7 +130,7 @@ describe("routes : lists", () => {
    describe("GET /lists/:id/edit", () => {
 
      it("should render a view with an edit item form", () => {
-       request.get(`${base}${this.list.id}/edit`, (err, res, body) => {
+       request.get(`${base}${List.id}/edit`, (err, res, body) => {
          expect(err).toBeNull();
          expect(body).toContain("Edit Item");
          expect(body).toContain("JS Frameworks");
@@ -137,7 +144,7 @@ describe("routes : lists", () => {
 
      it("should update the item with the given values", () => {
         const options = {
-           url: `${base}${this.list.id}/update`,
+           url: `${base}${List.id}/update`,
            form: {
              title: "JavaScript Frameworks",
              description: "There are a lot of them"
@@ -159,6 +166,5 @@ describe("routes : lists", () => {
 
    });
 
-   });
 
-   });
+});

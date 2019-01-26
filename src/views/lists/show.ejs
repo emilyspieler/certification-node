@@ -15,8 +15,11 @@
 
 
        <a href="/lists/<%= list.id %>/edit" class="btn btn-warning">Edit</a>
-       <a href="/lists/<%= list.id %>/items/new" class="btn btn-success">New Post</a>
+    
 
+       <% if(currentUser) { %>
+         <a href="/lists/<%= list.id %>/items/new" class="btn btn-success">New Post</a>
+       <% } %>
 
         <form style="display:initial" action="/lists/<%= list.id %>/destroy" method="post">
           <button type="submit" class="btn btn-danger">Delete</button>
