@@ -9,11 +9,17 @@
     <main class="container">
       <h1><%= item.title %></h1>
 
+      <% if(currentUser) { %>
+        <% include ../purchases/purchases.ejs %>
+        <% } %>
+
       <a href="/lists/<%= item.listId %>/items/<%= item.id %>/edit" class="btn btn-warning">Edit</a>
 
 
       <form style="display:initial" action="/lists/<%= item.listId %>/items/<%= item.id %>/destroy" method="post">
        <button type="submit" class="btn btn-danger">Delete</button>
+
+
      </form>
 
       <p><%= item.description %></p>

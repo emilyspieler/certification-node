@@ -24,12 +24,12 @@ module.exports = {
    },
 
    show(req, res, next){
-     itemQueries.getTheItem(req.params.id, (err, item) => {
+     itemQueries.getItem(req.params.id, (err, item) => {
        if(err || item == null){
          console.log(err);
          res.redirect(404, "/");
        } else {
-         res.render("items/show", {item});
+         res.render("items/show", {item: item});
        }
      });
    },
@@ -45,7 +45,7 @@ module.exports = {
    },
 
    edit(req, res, next){
-     itemQueries.getTheItem(req.params.id, (err, item) => {
+     itemQueries.getItem(req.params.id, (err, item) => {
        if(err || item == null){
          res.redirect(404, "/");
        } else {

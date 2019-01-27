@@ -30,6 +30,15 @@ module.exports = (sequelize, DataTypes) => {
      onDelete: "CASCADE"
    });
 
+    Item.hasMany(models.Purchase, {
+     foreignKey: "itemId",
+     as: "purchases"
+   });
+
+   Item.prototype.getPurchaseFor = function(userId){
+    return this.purchases.find((purchase) => { return purchase.userId == userId });
+  };
+
   };
   return Item;
 };

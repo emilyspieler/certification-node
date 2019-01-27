@@ -24,12 +24,21 @@ module.exports = (sequelize, DataTypes) => {
        foreignKey: "userId",
        as: "items"
      });
-  };
+
+
+  User.hasMany(models.Purchase, {
+     foreignKey: "userId",
+     as: "purchases"
+   });
 
   User.prototype.isAdmin = function() {
       return this.role === "admin";
     };
 
+    User.prototype.isMember = function() {
+        return this.role === "member";
+      };
 
+  };
   return User;
 };

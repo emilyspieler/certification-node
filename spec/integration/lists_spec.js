@@ -39,7 +39,7 @@ describe("routes : lists", () => {
            }
          })
          .then((list) => {
-           this.lost = list; //store the topic
+           this.list = list; //store the topic
            this.item = list.items[0]; //store the post
            done();
          })
