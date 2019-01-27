@@ -23,6 +23,9 @@
      </form>
 
       <p><%= item.description %></p>
+
+      <a href="/lists/<%= item.listId %>" class="btn btn-warning">back to list</a>
+
     </main>
 
     <% include ../static/partials/baseScripts.ejs %>
