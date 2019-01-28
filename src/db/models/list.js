@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
        foreignKey: "listId",
        as: "items"
      });
+
   };
   return List;
 };
