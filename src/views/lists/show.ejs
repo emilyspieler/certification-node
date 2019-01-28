@@ -16,6 +16,7 @@
 
       <div id="content">
        <a href="/lists/<%= list.id %>/edit" class="btn btn-warning">Edit List Name</a>
+       <a href="/lists/" class="btn btn-warning">back to list</a>
 
         <form style="display:initial" action="/lists/<%= list.id %>/destroy" method="post">
           <button type="submit" class="btn btn-danger">Delete</button>
@@ -27,20 +28,25 @@
 
       <p><%= list.description %></p>
 
-      <hr>
+    </div>
+
+
+        <div class="jumbotron" id="item">
 
       <h1>Items</h1>
 
-   <ul class="list-group">
-     <% list.items.forEach((item) => { %>
-       <li class="list-group-item">
+        <ul class="list-group">
+          <% list.items.forEach((item) => { %>
+            <li class="list-group-item">
          <a href="/lists/<%= list.id %>/items/<%= item.id %>"> <%= item.title %> </a>
-       </li>
-     <% }) %>
-   </ul>
- </div>
-</div>
-</div>
+          </li>
+        <% }) %>
+        </ul>
+
+    </div>
+    </div>
+  </div>
+    </div>
 
     </main>
 

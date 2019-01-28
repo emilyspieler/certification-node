@@ -1,6 +1,7 @@
 body {
   padding-top: 54px;
-  background-color: #CDD7D6;
+  background-image: linear-gradient(pink, yellow);
+  background-color: #cccccc;
 }
 
 nav {
@@ -9,6 +10,27 @@ nav {
 
 h1{
   padding-top: 5%;
+  font-family: 'Oleo Script', cursive;
+  font-size: 70px;
+  text-align: center;
+  padding-bottom: 5%;
+}
+
+h2{
+  padding-top: 5%;
+  font-family: 'Source Code Pro', monospace;
+}
+
+div.jumbotron {
+  background-color: white;
+  margin-top: 5%;
+  border: 1px solid black;
+}
+
+div.jumbotron#item {
+  background-color: white;
+  margin-top: 5%;
+  border: 1px solid white;
 }
 
 .skip {
