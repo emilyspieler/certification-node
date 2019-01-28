@@ -33,4 +33,13 @@ Overall:
 
 All the foundational pieces should be there. If I were given more time, I would love to focus more on the UI/UX portion by making the "mark as purchased" as well as "edit" and "delete" buttons directly on the items page, instead of needing to click on a separate "show item" page. There are also additional features I would like to add such as privacy settings where users can "choose" who they would like to view their lists and who would be allowed to edit.
 
-Finally, it would be great to add additional features for max prices as well as coupon code API's. 
+Finally, it would be great to add additional features for max prices as well as coupon code API's.
+
+Closing remarks:
+My biggest focus on this project, other than fulfilling the criteria, was creating a accessible site. I wanted to showcase my ability to create a site that has the ability to be navigated without a mouse, with a screen reader, etc.
+
+Web accessibilty features:
+-site that can be navigated through tabs without a mouse
+-a hidden feature that skips the navbar for the tab feautre
+-tested for contrast with greyscale screen
+-Tested with screen reader
