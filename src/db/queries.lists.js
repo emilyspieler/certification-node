@@ -1,6 +1,7 @@
 const List = require("./models").List;
 const Item = require("./models").Item;
 const Authorizer = require("../policies/list");
+const User = require("./models").User;
 
 module.exports = {
 
